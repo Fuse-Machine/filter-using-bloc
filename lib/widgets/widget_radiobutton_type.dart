@@ -3,12 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WidgetRadiobuttonType extends StatelessWidget {
-  const WidgetRadiobuttonType({ Key? key }) : super(key: key);
+  const WidgetRadiobuttonType({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-  FilterBloc bloc = BlocProvider.of<FilterBloc>(context);
-    return Column(
+    return BlocBuilder<FilterBloc, FilterState>(
+      builder: (context, state) {
+        if (state is StatusState) {
+          return getTypeList(context);
+        }
+        return getTypeList(context);
+      },
+    );
+   
+  }
+  getTypeList(BuildContext context){
+    FilterBloc bloc = BlocProvider.of<FilterBloc>(context);
+return Column(
         children: bloc.getTypeList
             .map((filter) => ListTile(
                   leading: Radio<String>(
@@ -16,7 +27,7 @@ class WidgetRadiobuttonType extends StatelessWidget {
                     value: filter,
                     onChanged: (value) {
                       BlocProvider.of<FilterBloc>(context)
-                          .add(StatusChangedEvent(newStatus: value!));
+                          .add(TypeChangedEvent(newType: value!));
                     },
                   ),
                   title: Text(filter),

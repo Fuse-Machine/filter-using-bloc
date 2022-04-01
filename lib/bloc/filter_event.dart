@@ -22,3 +22,11 @@ class CourseChangedEvent extends FilterEvent {
   String courseName;
   CourseChangedEvent({required this.courseName, required this.newValue});
 }
+
+class Clear extends FilterEvent {}
+
+// ignore: must_be_immutable
+class Apply extends FilterEvent {
+  BuildContext context;
+  Apply({required this.context});
+}
