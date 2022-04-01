@@ -9,16 +9,6 @@ class FilterInitial extends FilterState {
   FilterInitial({required this.selectedStatus, required this.selectedType});
 }
 
-class RadioStatusChanged extends FilterState {
-  final String filterStatus;
-  RadioStatusChanged({required this.filterStatus});
+class StatusChangedState extends FilterInitial{
+  StatusChangedState({required String selectedStatus, required String selectedType}) : super(selectedStatus: selectedStatus, selectedType: selectedType);
 }
-
-class RadioTypeChanged extends FilterState {
-  final String filterType;
-  RadioTypeChanged({required this.filterType});
-}
-
-class CheckboxCourseChanged extends FilterState {}
-
-class StatusState extends FilterState {}
