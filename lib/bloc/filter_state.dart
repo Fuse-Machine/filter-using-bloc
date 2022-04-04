@@ -1,7 +1,4 @@
-// ignore_for_file: must_be_immutable
-
 part of 'filter_bloc.dart';
-
 @immutable
 abstract class FilterState {}
 
@@ -11,6 +8,7 @@ class FilterInitial extends FilterState {
   FilterInitial({required this.selectedStatus, required this.selectedType});
 }
 
+// ignore: must_be_immutable
 class StatusState extends FilterInitial {
   late String status;
   late String type;
@@ -18,6 +16,7 @@ class StatusState extends FilterInitial {
       : super(selectedStatus: status, selectedType: type);
 }
 
+// ignore: must_be_immutable
 class TypeState extends FilterInitial {
   late String status;
   late String type;
@@ -25,19 +24,29 @@ class TypeState extends FilterInitial {
       : super(selectedStatus: status, selectedType: type);
 }
 
+// ignore: must_be_immutable
 class CourseState extends FilterState {
   late Map course;
   CourseState({required this.course});
 }
 
+// ignore: must_be_immutable
 class ClearState extends FilterState {
-  late String clearStatus;
+   String clearStatus='All';
 
-  late String clearType;
+   String clearType='All';
   List<Map> course;
 
   ClearState(
       {required String clearStatus,
       required String clearType,
       required this.course});
+}
+
+// ignore: must_be_immutable
+class ApplyState extends FilterState {
+  String status;
+  String type;
+  List<Map> course;
+  ApplyState({required this.status, required this.type, required this.course});
 }

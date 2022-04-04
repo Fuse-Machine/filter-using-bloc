@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:filter_bloc/data/data.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +16,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
       if (event is StatusChangedEvent) {
         selectedStatus = event.newStatus;
         emit(StatusState(status: selectedStatus, type: selectedType));
-        log(selectedStatus);
       }
       if (event is TypeChangedEvent) {
         selectedType = event.newType;
         emit(TypeState(status: selectedStatus, type: selectedType));
-        log(selectedType);
       }
       if (event is CourseChangedEvent) {
         for (var element in getCourseList) {
@@ -60,7 +56,8 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
         emit(ClearState(course: course, clearStatus: 'All', clearType: 'All'));
       }
       if (event is Apply) {
-        _displaySelectedData(event);
+        emit(ApplyState(
+            status: selectedStatus, type: selectedType, course: getCourseList));
       }
     });
   }
@@ -83,30 +80,5 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
   get selectedTypeValue {
     return selectedType;
-  }
-
-  _displaySelectedData(event) {
-    showDialog(
-        context: event.context,
-        builder: (BuildContext context) => AlertDialog(
-              title: const Text('Data'),
-              content: Column(
-                children: [
-                  Text('Status:\n $selectedStatus'),
-                  const SizedBox(height: 20),
-                  Text('Type:\n $selectedType'),
-                  const SizedBox(height: 20),
-                  const Text('Courses'),
-                  Column(
-                    children: getCourseList.map((courses) {
-                      if (courses['isChecked'] == true) {
-                        return Text(courses['name']);
-                      }
-                      return Container();
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ));
   }
 }

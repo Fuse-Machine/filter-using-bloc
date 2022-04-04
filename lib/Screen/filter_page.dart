@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:filter_bloc/bloc/filter_bloc.dart';
 import 'package:filter_bloc/widgets/bottom_navigation_bar.dart';
 import 'package:filter_bloc/widgets/widget.dart';
@@ -68,31 +70,74 @@ class FilterPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          TextButton(
-            onPressed: () {
-              BlocProvider.of<FilterBloc>(context).add(Clear());
-              //initail State
+          BlocBuilder<FilterBloc, FilterState>(
+            builder: (context, state) {
+              return TextButton(
+                onPressed: () {
+                  BlocProvider.of<FilterBloc>(context).add(Clear());
+                  if (state is ClearState) {
+                    log(state.clearStatus);
+                  }
+                  //initail State
+                },
+                child: const Text(
+                  'Clear All',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              );
             },
-            child: const Text(
-              'Clear All',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
           ),
           const SizedBox(width: 15),
-          ElevatedButton(
-            onPressed: () {
-              BlocProvider.of<FilterBloc>(context).add(Apply(context: context));
-              
+          BlocBuilder<FilterBloc, FilterState>(
+            builder: (context, state) {
+              return ElevatedButton(
+                onPressed: () {
+                  BlocProvider.of<FilterBloc>(context)
+                      .add(Apply(context: context));
+
+                  if (state is ApplyState) {
+                    _displaySelectedData(
+                        context, state.status, state.type, state.course);
+                  }
+                },
+                child: const Text(
+                  'Apply',
+                  style: TextStyle(fontSize: 20),
+                ),
+              );
             },
-            child: const Text(
-              'Apply',
-              style: TextStyle(fontSize: 20),
-            ),
           ),
         ],
       ),
     );
+  }
+
+  _displaySelectedData(
+      BuildContext context, String status, String type, List<Map> course) {
+    log(status);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+              title: const Text('Data'),
+              content: Column(
+                children: [
+                  Text('Status:\n $status'),
+                  const SizedBox(height: 20),
+                  Text('Type:\n $type'),
+                  const SizedBox(height: 20),
+                  const Text('Courses'),
+                  Column(
+                    children: course.map((courses) {
+                      if (courses['isChecked'] == true) {
+                        return Text(courses['name']);
+                      }
+                      return Container();
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ));
   }
 }
