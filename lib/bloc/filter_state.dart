@@ -1,4 +1,5 @@
 part of 'filter_bloc.dart';
+
 @immutable
 abstract class FilterState {}
 
@@ -32,9 +33,9 @@ class CourseState extends FilterState {
 
 // ignore: must_be_immutable
 class ClearState extends FilterState {
-   String clearStatus='All';
+  String clearStatus = 'All';
 
-   String clearType='All';
+  String clearType = 'All';
   List<Map> course;
 
   ClearState(

@@ -15,11 +15,11 @@ class WidgetRadiobuttonType extends StatelessWidget {
         return getTypeList(context);
       },
     );
-   
   }
-  getTypeList(BuildContext context){
+
+  getTypeList(BuildContext context) {
     FilterBloc bloc = BlocProvider.of<FilterBloc>(context);
-return Column(
+    return Column(
         children: bloc.getTypeList
             .map((filter) => ListTile(
                   leading: Radio<String>(

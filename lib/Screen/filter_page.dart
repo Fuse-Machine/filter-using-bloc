@@ -20,30 +20,38 @@ class FilterPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: const BottomNavigationbar(),
-      body: Column(
-        children: [
-          Expanded(
-              child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _wigetHeaderContainer(heading: 'Status'),
-                    const WidgetRadiobuttonStatus(),
-                    _wigetHeaderContainer(heading: 'Type'),
-                    const WidgetRadiobuttonType(),
-                    _wigetHeaderContainer(heading: 'Courses'),
-                    const WidgetCheckboxCourse(),
-                  ],
-                ),
+      body: BlocListener<FilterBloc, FilterState>(
+        listener: (context, state) {
+          if (state is ApplyState) {
+            _displaySelectedData(
+                context, state.status, state.type, state.course);
+          }
+        },
+        child: Column(
+          children: [
+            Expanded(
+                child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _wigetHeaderContainer(heading: 'Status'),
+                      const WidgetRadiobuttonStatus(),
+                      _wigetHeaderContainer(heading: 'Type'),
+                      const WidgetRadiobuttonType(),
+                      _wigetHeaderContainer(heading: 'Courses'),
+                      const WidgetCheckboxCourse(),
+                    ],
+                  ),
 
-                //
-              ],
-            ),
-          )),
-          _widgetBottomOption(context),
-        ],
+                  //
+                ],
+              ),
+            )),
+            _widgetBottomOption(context),
+          ],
+        ),
       ),
     );
   }
@@ -75,10 +83,6 @@ class FilterPage extends StatelessWidget {
               return TextButton(
                 onPressed: () {
                   BlocProvider.of<FilterBloc>(context).add(Clear());
-                  if (state is ClearState) {
-                    log(state.clearStatus);
-                  }
-                  //initail State
                 },
                 child: const Text(
                   'Clear All',
@@ -96,11 +100,6 @@ class FilterPage extends StatelessWidget {
                 onPressed: () {
                   BlocProvider.of<FilterBloc>(context)
                       .add(Apply(context: context));
-
-                  if (state is ApplyState) {
-                    _displaySelectedData(
-                        context, state.status, state.type, state.course);
-                  }
                 },
                 child: const Text(
                   'Apply',
@@ -133,7 +132,7 @@ class FilterPage extends StatelessWidget {
                       if (courses['isChecked'] == true) {
                         return Text(courses['name']);
                       }
-                      return Container();
+                      return const SizedBox.shrink();
                     }).toList(),
                   ),
                 ],

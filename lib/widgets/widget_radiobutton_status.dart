@@ -7,18 +7,12 @@ class WidgetRadiobuttonStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FilterBloc, FilterState>(
-      builder: (context, state) {
-        if (state is StatusState) {
-          return getStatusList(context);
-        }
-        return getStatusList(context);
-      },
-    );
+    return getStatusList(context);
+   
   }
 
   getStatusList(BuildContext context) {
-    FilterBloc bloc = BlocProvider.of<FilterBloc>(context);
+    FilterBloc bloc = BlocProvider.of<FilterBloc>(context, listen: true);
     return Column(
         children: bloc.getStatusList
             .map((filter) => ListTile(

@@ -53,7 +53,12 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
         for (var element in course) {
           element['isChecked'] = false;
         }
-        emit(ClearState(course: course, clearStatus: 'All', clearType: 'All'));
+        selectedStatus = 'All';
+        selectedType = 'All';
+        emit(ClearState(
+            course: course,
+            clearStatus: selectedStatus,
+            clearType: selectedType));
       }
       if (event is Apply) {
         emit(ApplyState(
